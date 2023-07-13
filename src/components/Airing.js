@@ -1,13 +1,13 @@
 import React from 'react'
 import { useGlobalContext } from '../context/global'
 import { Link } from 'react-router-dom'
-import styled from 'styled-components'
 import SideBar from './SideBar'
-function Popular({rendered}){
-  const {popularAnime,isSearch,searchResult} = useGlobalContext()
+import styled from 'styled-components'
+function Airing({rendered}){
+  const {airingAnime,isSearch,searchResult} = useGlobalContext()
   const conditionalRendering = () => {
-      if(!isSearch && rendered==='popular'){
-        return popularAnime.map((anime) => {
+      if(!isSearch && rendered==='airing'){
+        return airingAnime?.map((anime) => {
           return <Link to={`/anime/${anime.mal_id}`} key={anime.mal_id}> 
             <img src={anime.images.jpg.large_image_url} alt="" />
           </Link>
@@ -15,7 +15,7 @@ function Popular({rendered}){
         )
       }
       else {
-        return searchResult.map((anime) => {
+        return searchResult?.map((anime) => {
           return <Link to={`/anime/${anime.mal_id}`} key={anime.mal_id}>
             <img src={anime.images.jpg.large_image_url} alt="" />
           </Link>
@@ -24,16 +24,16 @@ function Popular({rendered}){
     }
   return (
     <PopularStyled>
-      <div className='popular-anime'>
+      <div className='airing-anime'>
         {conditionalRendering()}
       </div>
-      <SideBar />
+      <SideBar/>
     </PopularStyled>
   )
 }
 const PopularStyled = styled.div`
   display: flex;
-  .popular-anime {
+  .airing-anime {
     margin-top: 2rem;
     padding-top: 2rem;
     padding-bottom: 2rem;
@@ -59,4 +59,4 @@ const PopularStyled = styled.div`
   }
 `;
 
-export default Popular
+export default Airing

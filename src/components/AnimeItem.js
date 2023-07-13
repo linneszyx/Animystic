@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import { useParams } from "react-router-dom";
+import {Link} from 'react-router-dom';
 import styled from "styled-components";
 function AnimeItem() {
   const { id } = useParams();
@@ -53,8 +54,7 @@ function AnimeItem() {
         Trailer
       </h3>
       <div className="trailer-con">
-        {trailer?.embed_url
-          &&
+        {trailer?.embed_url ? 
           <iframe
             src={trailer?.embed_url}
             title="Inline Frame Example"
@@ -63,15 +63,32 @@ function AnimeItem() {
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
             allowFullScreen>
           </iframe>
+          : <h3>Trailer Not Available</h3>
         }
       </div>
+      <h3 className="title">
+        Characters
+        </h3>
+      <div className="characters">
+        {characters?.map((character,index) => {
+              const {role} = character;
+              const {images,name,mal_id}  = character.character;
+              return <Link to = {`/character/${mal_id}`} key={index}>
+                <div className="character"><img src={images?.jpg.image_url} alt={name} />
+                <h4>{name}</h4>
+                <p>{role}</p>
+                </div>
+              </Link>
+        })}
+        </div>
     </AnimeItemStyled>
   );
 }
 const AnimeItemStyled = styled.div`
   padding: 3rem 18rem;
   background-color: #ededed;
-  h1{
+  h1
+  {
     display:inline-block;
     font-size: 3rem;
     margin-bottom: 1.5rem;
@@ -80,7 +97,8 @@ const AnimeItemStyled = styled.div`
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     transition: all 0.4s ease-in-out;
-    &:hover{
+    &:hover
+    {
       transform:skew(-3deg);
     }
   }
@@ -99,11 +117,13 @@ const AnimeItemStyled = styled.div`
         transform:skew(-3deg);
       }
     }
-      .description{
+      .description
+      {
         margin-top:2rem;
         color:#6c7983;
         line-height: 1.7rem;
-        button{
+        button
+        {
           background-color: transparent;
           border: none;
           outline:none;
@@ -111,29 +131,85 @@ const AnimeItemStyled = styled.div`
           font-size: 1.2rem;
           color: #27ae60;
           font-weight: 600;
-        }}
-      .details{
+        }
+      }
+      .trailer-con
+      {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        iframe
+        {
+          outline:none;
+          border:5px solid #e5e7eb;
+          padding:1.5rem;
+          border-radius: 10px;
+          background-color: #fff;
+        }
+      }
+      .details
+      {
         background-color: #fff;
         border-radius: 20px;
         padding: 2rem;
         border: 5px solid #e5e7eb;
-        .detail{
+        .detail
+        {
+          display: grid;
           grid-template-columns: repeat(2, 1fr);
-          img{
+          img
+          {
             border-radius: 7px;
           }
         }
-        .anime-details{
+        .anime-details
+       {
           display: flex;
           flex-direction: column;
           justify-content: space-between;
-          p{
+          p
+          {
             display: flex;
             gap: 1rem;
           }
-          p span:first-child{
+          p span:first-child
+          {
             font-weight: 600;
-            color:#45
+            color:#6c7983;
+          }
+        } 
+      }
+      .characters
+      {
+        display:grid;
+        grid-template-columns : repeat(auto-fill,minmax(200px,1fr));
+        grid-gap:2rem;
+        background-color:#fff;
+        padding:2rem;
+        border-radius: 20px;
+        border: 5px solid #e5e7eb;
+        .character
+        {
+          padding: .4rem .6rem;
+          border-radius:7px;
+          background-color: #EDEDED;
+          transition: all 0.4s ease-in-out;
+          img
+          {
+            width:100%;
+          }
+          h4
+          {
+            padding:.5rem 0;
+            color:#454e56;
+          }
+          p
+          {
+            color:#27ae60;
+          }
+          &:hover
+          {
+            transform:translateY(-5px);
           }
         }
       }
